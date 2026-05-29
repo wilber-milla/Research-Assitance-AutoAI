@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Systematic Review — CNNs in Chromosome Analysis (2020-2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;--bg2:#111827;--bg3:#1e293b;--surface:#1e2640;
+  --border:#2d3a5c;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#6366f1;--accent2:#818cf8;--accent-glow:rgba(99,102,241,.25);
+  --green:#22c55e;--cyan:#06b6d4;--amber:#f59e0b;--rose:#f43f5e;
+  --purple:#a855f7;--teal:#14b8a6;
+  --radius:12px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+/* ─── Hero ─── */
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 40%,#312e81 70%,#1e1b4b 100%);
+  padding:4rem 2rem 3rem;text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(99,102,241,.2),transparent);
+  pointer-events:none;
+}
+.hero h1{
+  font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;
+  background:linear-gradient(135deg,#c7d2fe,#818cf8,#6366f1);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:-.02em;margin-bottom:.5rem;position:relative;
+}
+.hero .subtitle{color:var(--text2);font-size:1.05rem;font-weight:400;position:relative}
+.hero .meta{margin-top:1.2rem;display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;position:relative}
+.hero .meta-item{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--radius);padding:.6rem 1.2rem;
+}
+.hero .meta-item .label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text3)}
+.hero .meta-item .value{font-size:1.6rem;font-weight:700;color:var(--accent2)}
+
+/* ─── Container ─── */
+.container{max-width:1500px;margin:0 auto;padding:2rem 1.5rem}
+
+/* ─── Section ─── */
+.section-title{
+  font-size:1.35rem;font-weight:700;margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.section-title .icon{font-size:1.4rem}
+
+/* ─── Charts Grid ─── */
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:1.5rem;margin-bottom:2.5rem}
+.chart-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.5rem;transition:transform .2s,box-shadow .2s;
+}
+.chart-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.chart-card h3{font-size:.95rem;font-weight:600;margin-bottom:1rem;color:var(--text2)}
+.chart-wrap{position:relative;height:280px}
+
+/* ─── KPI Row ─── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2.5rem}
+.kpi{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.2rem 1.5rem;text-align:center;transition:transform .2s;
+}
+.kpi:hover{transform:translateY(-2px)}
+.kpi .kpi-value{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi .kpi-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-top:.3rem}
+
+/* ─── Table ─── */
+.table-section{margin-bottom:3rem}
+.table-controls{
+  display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;
+}
+.search-box{
+  flex:1;min-width:250px;padding:.65rem 1rem .65rem 2.6rem;
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);
+  color:var(--text);font-size:.9rem;outline:none;transition:border-color .2s;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242.156a5 5 0 1 1 0-10 5 5 0 0 1 0 10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:.8rem center;
+}
+.search-box:focus{border-color:var(--accent)}
+.filter-btn{
+  padding:.65rem 1.1rem;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text2);font-size:.8rem;cursor:pointer;
+  transition:all .2s;
+}
+.filter-btn:hover,.filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+.table-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--surface);
+}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+thead{background:var(--bg3);position:sticky;top:0;z-index:2}
+th{
+  padding:.8rem .7rem;text-align:left;font-weight:600;color:var(--text2);
+  text-transform:uppercase;font-size:.68rem;letter-spacing:.06em;
+  border-bottom:2px solid var(--border);white-space:nowrap;cursor:pointer;
+  user-select:none;transition:color .2s;
+}
+th:hover{color:var(--accent2)}
+th .sort-arrow{font-size:.6rem;margin-left:.3rem;opacity:.4}
+td{padding:.7rem .7rem;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top}
+tr:hover td{background:rgba(99,102,241,.04)}
+.num{color:var(--text3);font-size:.75rem;width:2.5rem;text-align:center}
+.center{text-align:center}
+.title-cell{max-width:350px;min-width:200px}
+.title-cell a{color:var(--accent2);text-decoration:none;font-weight:500;line-height:1.4}
+.title-cell a:hover{text-decoration:underline}
+.authors{font-size:.72rem;color:var(--text3);margin-top:.2rem;line-height:1.3}
+
+/* ─── Badges ─── */
+.badge{
+  display:inline-block;padding:.15rem .5rem;border-radius:4px;
+  font-size:.72rem;font-weight:500;white-space:nowrap;
+}
+.badge-na{background:rgba(255,255,255,.05);color:var(--text3)}
+.badge-db{background:rgba(6,182,212,.12);color:var(--cyan)}
+.badge-model{background:rgba(168,85,247,.12);color:var(--purple)}
+.badge-metric{background:rgba(34,197,94,.12);color:var(--green)}
+
+/* ─── Footer ─── */
+.footer{
+  text-align:center;padding:2rem;color:var(--text3);font-size:.78rem;
+  border-top:1px solid var(--border);margin-top:2rem;
+}
+
+/* ─── Scroll to top ─── */
+.scroll-top{
+  position:fixed;bottom:2rem;right:2rem;width:44px;height:44px;
+  background:var(--accent);color:#fff;border:none;border-radius:50%;
+  cursor:pointer;font-size:1.2rem;display:none;align-items:center;
+  justify-content:center;box-shadow:0 4px 20px var(--accent-glow);
+  transition:transform .2s;z-index:100;
+}
+.scroll-top:hover{transform:scale(1.1)}
+.scroll-top.visible{display:flex}
+
+/* ─── Responsive ─── */
+@media(max-width:768px){
+  .hero{padding:2.5rem 1rem 2rem}
+  .charts{grid-template-columns:1fr}
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .container{padding:1.5rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ HERO ═══════ -->
+<header class="hero">
+  <h1>🧬 Systematic Literature Review</h1>
+  <p class="subtitle">Convolutional Neural Networks in Chromosome Identification, Segmentation &amp; Classification (2020–2026)</p>
+  <div class="meta">
+    <div class="meta-item"><div class="label">Total Papers</div><div class="value">94</div></div>
+    <div class="meta-item"><div class="label">Databases</div><div class="value">3</div></div>
+    <div class="meta-item"><div class="label">Year Range</div><div class="value">2020–2026</div></div>
+    <div class="meta-item"><div class="label">Generated</div><div class="value" style="font-size:1rem">May 24, 2026 — 22:51</div></div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══════ KPI ═══════ -->
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-value">94</div><div class="kpi-label">Papers Found</div></div>
+    <div class="kpi"><div class="kpi-value">26</div><div class="kpi-label">Distinct Models</div></div>
+    <div class="kpi"><div class="kpi-value">94.8%</div><div class="kpi-label">Avg Accuracy (reported)</div></div>
+    <div class="kpi"><div class="kpi-value">CNN</div><div class="kpi-label">Most Used Model</div></div>
+  </div>
+
+  <!-- ═══════ CHARTS ═══════ -->
+  <h2 class="section-title"><span class="icon">📊</span> Distribution Overview</h2>
+  <div class="charts">
+    <div class="chart-card">
+      <h3>Publications by Year</h3>
+      <div class="chart-wrap"><canvas id="chartYear"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Papers by Database Source</h3>
+      <div class="chart-wrap"><canvas id="chartDB"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Most Frequently Used Models</h3>
+      <div class="chart-wrap"><canvas id="chartModels"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ═══════ TABLE ═══════ -->
+  <section class="table-section">
+    <h2 class="section-title"><span class="icon">📄</span> All Papers</h2>
+    <div class="table-controls">
+      <input class="search-box" id="searchInput" type="text" placeholder="Search by title, model, year, database…">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="Semantic Scholar">Semantic Scholar</button>
+      <button class="filter-btn" data-filter="arXiv">arXiv</button>
+      <button class="filter-btn" data-filter="PubMed">PubMed</button>
+    </div>
+    <div class="table-wrap">
+      <table id="papersTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title / Authors</th>
+            <th>Year <span class="sort-arrow">▲</span></th>
+            <th>Source</th>
+            <th>Model(s)</th>
+            <th>Images</th>
+            <th>Epochs</th>
+            <th>Batch</th>
+            <th>Accuracy</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1</th>
+            <th>IoU</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          
+        <tr>
+            <td class="num">1</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/41948604/" target="_blank" rel="noopener">Integrating dual convolutional networks and BiLSTM for precision prediction of chronic myeloid leukemia from protein sequences.</a>
+                <div class="authors">Hend Khalid Alkahtani, Ayman Qahmash</div>
+            </td>
+            <td class="center">2026</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">LSTM</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">97.5%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">2</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/e29fc1d3051dbe84ebf5ee050b1c7c9aedceec73" target="_blank" rel="noopener">Flemboda artificial intelligence: hybrid fuzzy-convolutional neural network for efficient chromosome abnormality classification</a>
+                <div class="authors">William Li, ·. M. Karpagam, K. Kaviarasu, K. Kiruthika, ·. S. Sarumathi et al.</div>
+            </td>
+            <td class="center">2026</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">3</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/424850c1f8ecec8be10554f1efb3df57ee7024b5" target="_blank" rel="noopener">Down Syndrome Image Classification Project Using Deep Learning</a>
+                <div class="authors">Kammari Samiya, Nese Indu, Bantupalli Nagalakshmi, M. Himasree, Yalama Poornima</div>
+            </td>
+            <td class="center">2026</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">4</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/41751883/" target="_blank" rel="noopener">Development of an Artificial Intelligence-Based Chromosome Interpretation System for Amniotic Fluid Karyotyping.</a>
+                <div class="authors">Kuan-Han Wu, Hsuan-Wei Huang, Chia Yun Lin, Hsu-Tung Huang, Tzuo-Yau Fan et al.</div>
+            </td>
+            <td class="center">2026</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">5</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/41961746/" target="_blank" rel="noopener">Deep Learning-Enabled Multimodal AFM Image Enhancement: Correlation Analysis between Surface Topography and Multiphysics Fields.</a>
+                <div class="authors">Liguo Tian, Haiyue Yu, Lanjiao Liu, Yuxi Huang, Bowei Wang et al.</div>
+            </td>
+            <td class="center">2026</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">Xception</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">6</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/42151364/" target="_blank" rel="noopener">Automated karyotyping and structural anomaly detection through a hybrid multi-stage deep learning framework integrating chromosome detection, pairwise classification, and autoencoder-based analysis.</a>
+                <div class="authors">Carolina Rosas-Alatriste, Noé Oswaldo Rodríguez-Rodríguez, Amadeo José Argüelles-Cruz, Alejandro Rosas-Cabral, Cornelio Yáñez-Márquez et al.</div>
+            </td>
+            <td class="center">2026</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">ResNet-50, ResNet, YOLO, Autoencoder</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">7</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/d57c3c602e57b1c29f7d5d59ce7ecc6659d9c077" target="_blank" rel="noopener">UCRD-Net: End-to-End Chromosome Segmentation Based on Uncertainty Correction and Region Decomposition</a>
+                <div class="authors"></div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Mask R-CNN, R-CNN</span></td>
+            <td class="center">, chromosomes</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">8</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/40185948/" target="_blank" rel="noopener">Supra-second tracking and live-cell karyotyping reveal principles of mitotic chromosome dynamics.</a>
+                <div class="authors">Rumen Stamatov, Sonya Uzunova, Yoana Kicheva, Maria Karaboeva, Tavian Blagoev et al.</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">9</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/d75ad2678cddaa99e173982c9d011908004da18b" target="_blank" rel="noopener">MetaChrome: An Open-Source, User-Friendly Tool for Automated Metaphase Chromosome Analysis</a>
+                <div class="authors">M. A. Sagar, Yamini Dalal, Gianluca Pegoraro, Ganesan Arunkumar</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">10</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/40954484/" target="_blank" rel="noopener">Exploring deep learning and hybrid approaches in molecular subgrouping and prognostic-related genetic signatures of medulloblastoma.</a>
+                <div class="authors">Yanong Li, Hailong Liu, Yawei Liu, Jane Li, Hiro Hiromichi Suzuki et al.</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">77.50%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">11</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/a617a197852d9c9b08f3be721c8e013ffd5d2b99" target="_blank" rel="noopener">Efficient Chromosome Abnormal Detection using Yolo-V8 model</a>
+                <div class="authors">V. UmaRani, Augustian Isaac, K. Premnath, K. G., S. A et al.</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">VGG-19, VGG, YOLO, DCNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">95.2%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">12</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/47bcbd689534e98c04b7052e8eaffc3900d6d521" target="_blank" rel="noopener">Dari Mikroskop ke Machine Learning: Tinjauan Literatur tentang Teknologi Pemeriksaan Spermatozoa pada Kasus Persetubuhan (2019–2024)</a>
+                <div class="authors">Neshya Ruriana Putri</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">13</td>
+            <td class="title-cell"><a href="http://arxiv.org/abs/2510.08662v2" target="_blank" rel="noopener">DPCformer: An Interpretable Deep Learning Model for Genomic Prediction in Crops</a>
+                <div class="authors">Pengcheng Deng, Kening Liu, Mengxi Zhou, Mingxi Li, Rui Yang et al.</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">arXiv</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">14</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/39906268/" target="_blank" rel="noopener">ChromosomeNet: Deep Learning-Based Automated Chromosome Detection in Metaphase Cell Images.</a>
+                <div class="authors">Chih-En Kuo, Jun-Zhou Li, Jenn-Jhy Tseng, Feng-Chu Lo, Ming-Jer Chen et al.</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">YOLO, R-CNN, Transformer/ViT</span></td>
+            <td class="center">5000 metaphase</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99.60%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">15</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/c5240e259c4efd313213b08f85bd0c503d465b65" target="_blank" rel="noopener">Chromosome Image Classification Using Edge Fusion Attention Network</a>
+                <div class="authors">V. Praveena, S. Anbumani, M. Nirmala, S. Karthik</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99.5%</span></td>
+            <td class="center"><span class="badge badge-metric">99.63%</span></td>
+            <td class="center"><span class="badge badge-metric">99.45%</span></td>
+            <td class="center"><span class="badge badge-metric">99.48%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">16</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/bb1b4f1bbd7647ad067e5314412b6abba5a0f81a" target="_blank" rel="noopener">Chromosome Image Classification Based on Improved Differentiable Architecture Search</a>
+                <div class="authors">Jianming Li, Changchang Zeng, Min Zhou, Zeyi Shang, Jiangang Zhu</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">17</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/41198709/" target="_blank" rel="noopener">Automatic detection of sister chromatid exchanges using machine learning models and image analysis algorithms.</a>
+                <div class="authors">Mizuo Teraoka, Shinya Matsumoto, Ryotaro Kawasumi, Kiyoshi Nishikawa, Kan Okubo et al.</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">Mask R-CNN, R-CNN, Transformer/ViT, Vision Transformer</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">84.10%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">18</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/d82474c41b929908d2551865f290d653e8d0748b" target="_blank" rel="noopener">Automated karyogram analysis for early detection of genetic and neurodegenerative disorders: a hybrid machine learning approach</a>
+                <div class="authors">S. Tabassum, Muhammad Jawad Khan, Javaid Iqbal, A. Waris, M. A. Ijaz</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Autoencoder</span></td>
+            <td class="center">. karyotype</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99.3%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">19</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/375afd86769397766a6345da186ab4066041dcd0" target="_blank" rel="noopener">Automated Detection of Dicentric Chromosomes Using Deep Learning: A Scalable Solution for Cytogenetic Analysis</a>
+                <div class="authors">D. S, V. S</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Faster R-CNN, R-CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">20</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/40884650/" target="_blank" rel="noopener">Artificial Intelligence and Chromothripsis.</a>
+                <div class="authors">Davide Callegarin, Nada Maaziz, Anne-Laure Mosca, Nathalie Marle, Mélodie Opale et al.</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">21</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/39922836/" target="_blank" rel="noopener">Adaptive genetic algorithm based deep feature selector for cancer detection in lung histopathological images.</a>
+                <div class="authors">Avigyan Roy, Priyam Saha, Nandita Gautam, Friedhelm Schwenker, Ram Sarkar</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99.75%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">22</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/41312108/" target="_blank" rel="noopener">APTES: a high-throughput deep learning-based Arabidopsis phenotypic trait estimation system for individual leaves and siliques.</a>
+                <div class="authors">Ruifang Zhai, Ning Tang, Zhi Liu, Sha Tao, Yupu Huang et al.</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">Mask R-CNN, R-CNN, GAN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">23</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/40818203/" target="_blank" rel="noopener">A deep learning-based automatic chromosome segmentation method for metaphase cell images.</a>
+                <div class="authors">Jenn-Jhy Tseng, Chien-Hsing Lu, Li-Yuan Huang, Wen-Chien Bin, Ming-Jer Chen et al.</div>
+            </td>
+            <td class="center">2025</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">SegNet, Transformer/ViT, Xception</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">98.9%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99.7%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">24</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/38854106/" target="_blank" rel="noopener">micronuclAI: Automated quantification of micronuclei for assessment of chromosomal instability.</a>
+                <div class="authors">Miguel A Ibarra-Arellano, Lindsay A Caprio, Aroj Hada, Niklas Stotzem, Luke Cai et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">25</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/8126d4fc20d24150aadbbc2b6751193da7cbd57b" target="_blank" rel="noopener">[Application of convolutional neural networks for the classification of metaphase chromosomes].</a>
+                <div class="authors">Lingling Xu, Ying Zhou, Lichao Zhang, Zhenyu Wang, Q. Mao et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">26</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/c89ca4bb50a205eceee1e76e0daa81f0b498364f" target="_blank" rel="noopener">The model architecture search system for chromosome image classification</a>
+                <div class="authors">Nurullah Calik</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">27</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/304a5e56ea6a4bbbfcae64986f2ca0b6b7765818" target="_blank" rel="noopener">Karyotype AI for Precision Oncology</a>
+                <div class="authors">Z. Shamsi, D. Bryant, Jacob M Wilson, X. Qu, Kumar Avinava Dubey et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Inception, Transformer/ViT</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99.3%</span></td>
+            <td class="center"><span class="badge badge-metric">100%</span></td>
+            <td class="center"><span class="badge badge-metric">90%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">28</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/38776728/" target="_blank" rel="noopener">KaryoXpert: An accurate chromosome segmentation and classification framework for karyotyping analysis without training with manually labeled metaphase-image mask annotations.</a>
+                <div class="authors">Siyuan Chen, Kaichuang Zhang, Jingdong Hu, Na Li, Ao Xu et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">Xception</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">29</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/37804132/" target="_blank" rel="noopener">Geogenomic Predictors of Genetree Heterogeneity Explain Phylogeographic and Introgression History: A Case Study in an Amazonian Bird (Thamnophilus aethiops).</a>
+                <div class="authors">Lukas J Musher, Glaucia Del-Rio, Rafael S Marcondes, Robb T Brumfield, Gustavo A Bravo et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">30</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/16f88be6c7623935dee604d4152460f96db57a1d" target="_blank" rel="noopener">GeoChromNet: Declustering Metaphase Chromosomes via Topology-Informed Deep Instance Segmentation</a>
+                <div class="authors">D. G, L. V, Biju V G, V. R, Nonam Chellapan et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Mask R-CNN, R-CNN, SegNet, DeepLab</span></td>
+            <td class="center">5000 metaphase</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">31</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/caaf6187e7e5bd35a21664979ca6c88cd4ebb5a4" target="_blank" rel="noopener">Fully Automatic Karyotyping via Deep Convolutional Neural Networks</a>
+                <div class="authors">Chengyu Wang, Limin Yu, Jionglong Su, Juming Shen, Valerio Selis et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Mask R-CNN, R-CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">89.75%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">32</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/9e5800cf78560001bc566211d70f7d19fb3fc7c5" target="_blank" rel="noopener">Evaluating Performance of Machine Learning Models for Chromosomal Disorder Classification using Karyotype Images: A Comparative Study</a>
+                <div class="authors">Pallavi Shetty, S. Kamath, P. D., Rajesh B S, R. A. Shetty et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Inception</span></td>
+            <td class="center">835 images</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">33</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/4048dde605c0b64076fa9e5240bc8c8d63a4b1d6" target="_blank" rel="noopener">Enhancing chromosomal analysis efficiency through deep learning-based artificial intelligence graphic analysis</a>
+                <div class="authors">Ying Zhou, Lingling Xu, Lichao Zhang, Danhua Shi, Chao Wu et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">34</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/804c82355dec80d824b9361f5cd70c0fd85942e8" target="_blank" rel="noopener">Chromosome segmentation and classification: an updated review</a>
+                <div class="authors">D. Somasundaram, Nirmala Madian, Kam Meng Goh, S. Suresh</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">35</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/ff8bc37339a4c7cf77a4d5cc908ce6a4f8b75ada" target="_blank" rel="noopener">Artificial Intelligence and its Role in Forensic Karyotyping: A Systematic Review</a>
+                <div class="authors">Sachin Kumar Tripathi, K. Rao, Rajiv Ratan Singh, P. K. Yadav</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">36</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/b56bae0cd28151e8ea4518f4ceafa1d98fc57d53" target="_blank" rel="noopener">Analyzable Metaphase Image Selection Using Deep Learning</a>
+                <div class="authors">A. S, Gopakumar C</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">ResNet-50, ResNet, VGG-16, DenseNet, EfficientNet, MobileNet</span></td>
+            <td class="center">, metaphase</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">37</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/37931220/" target="_blank" rel="noopener">An Integral R-Banded Karyotype Analysis System of Bone Marrow Metaphases Based on Deep Learning.</a>
+                <div class="authors">Jiyue Wang, Chao Xia, Yaling Fan, Lu Jiang, Guang Yang et al.</div>
+            </td>
+            <td class="center">2024</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center">885 metaphase</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">93.33%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">91.95%</span></td>
+        </tr>
+        <tr>
+            <td class="num">38</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/ccc189fd521c559db372f01c718479b89cd50d62" target="_blank" rel="noopener">P-069 A male factor panel of NGS can identify the genetic cause of more than half patients with seminal alterations</a>
+                <div class="authors">A. Turienzo Diez, E. M. Garcia, A. Pay, R. Morales, F. Lozano et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">39</td>
+            <td class="title-cell"><a href="http://arxiv.org/abs/2306.14129v1" target="_blank" rel="noopener">Masked conditional variational autoencoders for chromosome straightening</a>
+                <div class="authors">Jingxiong Li, Sunyi Zheng, Zhongyi Shui, Shichuan Zhang, Linyi Yang et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">arXiv</span></td>
+            <td><span class="badge badge-model">Autoencoder</span></td>
+            <td class="center">, chromosomes</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">40</td>
+            <td class="title-cell"><a href="http://arxiv.org/abs/2308.13099v1" target="_blank" rel="noopener">Hybrid Genetic Algorithm and Hill Climbing Optimization for the Neural Network</a>
+                <div class="authors">Krutika Sarode, Shashidhar Reddy Javaji</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">arXiv</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">41</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/36746997/" target="_blank" rel="noopener">High-precision automatic identification method for dicentric chromosome images using two-stage convolutional neural network.</a>
+                <div class="authors">Xiang Shen, Tengfei Ma, Chaowen Li, Zhanbo Wen, Jinlin Zheng et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99.4%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">85.8%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">42</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/37387128/" target="_blank" rel="noopener">Genome-wide scans for selective sweeps using convolutional neural networks.</a>
+                <div class="authors">Hanqing Zhao, Matthijs Souilljee, Pavlos Pavlidis, Nikolaos Alachiotis</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">43</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/36913821/" target="_blank" rel="noopener">Genetic hyperparameter optimization with Modified Scalable-Neighbourhood Component Analysis for breast cancer prognostication.</a>
+                <div class="authors">Shtwai Alsubai, Abdullah Alqahtani, Mohemmed Sha</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">Inception, DCNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">44</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/c14206a4a63f019a731ede279fb7a29228198d08" target="_blank" rel="noopener">Deep-Learning-Based Human Chromosome Classification: Data Augmentation and Ensemble</a>
+                <div class="authors">M. D’Angelo, L. Nanni</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">ResNet-50, ResNet, Transformer/ViT</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">45</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/8bb48c9c1210cbbc9f664481d211019d827b8a61" target="_blank" rel="noopener">Deep learning system for classification of ploidy status using time-lapse videos.</a>
+                <div class="authors">E. Paya, Cristian Pulgarín, L. Bori, Adrián Colomer, V. Naranjo et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">LSTM</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">46</td>
+            <td class="title-cell"><a href="http://arxiv.org/abs/2305.01968v1" target="_blank" rel="noopener">DPSeq: A Novel and Efficient Digital Pathology Classifier for Predicting Cancer Biomarkers using Sequencer Architecture</a>
+                <div class="authors">Min Cen, Xingyu Li, Bangwei Guo, Jitendra Jonnagaddala, Hong Zhang et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">arXiv</span></td>
+            <td><span class="badge badge-model">ResNet-18, ResNet, EfficientNet, MobileNet, Transformer/ViT, Vision Transformer, LSTM, Xception</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">47</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/35788352/" target="_blank" rel="noopener">Combined molecular subtyping, grading, and segmentation of glioma using multi-task deep learning.</a>
+                <div class="authors">Sebastian R van der Voort, Fatih Incekara, Maarten M J Wijnenga, Georgios Kapsas, Renske Gahrmann et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">48</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/0980deea77dc179af9cfb10fe4f76c4ef4d3f61c" target="_blank" rel="noopener">Classifying aneuploidy in genotype intensity data using deep learning.</a>
+                <div class="authors">A. Bouwman, I. Hulsegge, R. Hawken, J. Henshall, R. Veerkamp et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99.9%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">49</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/bcc8033068d1d248f0dc2b06e35e59a370428cb7" target="_blank" rel="noopener">Classification of Chromosomes to Diagnose Chromosomal Abnormalities using CNN</a>
+                <div class="authors">S.Saranya Dr, S. Lakshmi</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center">4830 chromosomes</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">50</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/37985030/" target="_blank" rel="noopener">Chromosome classification via deep learning and its application to patients with structural abnormalities of chromosomes.</a>
+                <div class="authors">Chuan Yang, Tingting Li, Qiulei Dong, Yanyan Zhao</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">DCNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">85.37%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">51</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/03374e55d887636503bd45393a2ac714dd6238b0" target="_blank" rel="noopener">Chromosome Karyotyping and Aneuploidy Detection using Deep Learning Networks</a>
+                <div class="authors">Et al. S. Saranya</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">GoogLeNet</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">52</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/537a100ba8a447254e5bdf10bbd67c0f3528f37c" target="_blank" rel="noopener">Chromosome Cluster Type Identification Using a Swin Transformer</a>
+                <div class="authors">Indu Joshi, Arnab Kumar Mondal, N. Navab</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Transformer/ViT</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">53</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/37094502/" target="_blank" rel="noopener">Automatic sex estimation using deep convolutional neural network based on orthopantomogram images.</a>
+                <div class="authors">Wen-Qing Bu, Yu-Xin Guo, Dong Zhang, Shao-Yi Du, Meng-Qi Han et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">54</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/39f2343ba5e655e4075f77cc6e103b04df232a34" target="_blank" rel="noopener">Automatic detection of a structural chromosomal abnormality: the del(5q) deletion</a>
+                <div class="authors">M. Bechar, J. Guyader, Marwa El Bouz, N. Douet-Guilbert, Ayman Al Falou et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">VGG-19</span></td>
+            <td class="center">. karyotype</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">98.66%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">89.33%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">55</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/d7f679fda2969fa6ac66e0c14f233f56d0d8c2cd" target="_blank" rel="noopener">A novel two-staged deep learning based workflow for analyzable metaphase detection</a>
+                <div class="authors">H. I. Turkmen</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">56</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/36598fa8f1d45a4236202886a37bf9b5d58b1c7d" target="_blank" rel="noopener">A cloud-based resource for genome coordinate-based exploration and large-scale analysis of chromosome aberrations and gene fusions in cancer</a>
+                <div class="authors">Janet Wang, Jeanne Zheng, Elaine E Lee, Boris Aguilar, J. Phan et al.</div>
+            </td>
+            <td class="center">2023</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">57</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/35241745/" target="_blank" rel="noopener">Two-dimensional CNN-based distinction of human emotions from EEG channels selected by multi-objective evolutionary algorithm.</a>
+                <div class="authors">Luis Alfredo Moctezuma, Takashi Abe, Marta Molinas</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">58</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/2287d3199a9f9c0a6c6de8782a4d154ff2b7fe80" target="_blank" rel="noopener">Triplet loss for Chromosome Classification</a>
+                <div class="authors">Pranshav Gajjar, P. Shah, Akash Vegada, J. Savalia</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">59</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/35273270/" target="_blank" rel="noopener">Rapid and automatic detection of micronuclei in binucleated lymphocytes image.</a>
+                <div class="authors">Xiang Shen, Ying Chen, Chaowen Li, Fucheng Yang, Zhanbo Wen et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center">2000 images</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">60</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/36482308/" target="_blank" rel="noopener">Pattern recognition of topologically associating domains using deep learning.</a>
+                <div class="authors">Jhen Yuan Yang, Jia-Ming Chang</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">61</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/133bd367a5fa6d752fa7f7b2e683ec223917e87c" target="_blank" rel="noopener">P-024 Identification of spermatogenic infertility phenotypes using next generation sequencing</a>
+                <div class="authors">G. Eva M, F. Lozano, B. Lledó, A. Turienzo, A. Cascales et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">62</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/35691379/" target="_blank" rel="noopener">Mathematical approach for segmenting chromosome clusters in metaspread images.</a>
+                <div class="authors">Somasundaram Devaraj, Nirmala Madian, S Suresh</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">63</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/35009139/" target="_blank" rel="noopener">DeepLRR: An Online Webserver for Leucine-Rich-Repeat Containing Protein Characterization Based on Deep Learning.</a>
+                <div class="authors">Zhenya Liu, Zirui Ren, Lunyi Yan, Feng Li</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">64</td>
+            <td class="title-cell"><a href="http://arxiv.org/abs/2207.09598v1" target="_blank" rel="noopener">Deep learning-based identification of sub-nuclear structures in FIB-SEM images</a>
+                <div class="authors">Niraj Gupta, Eric J. Roberts, Song Pang, C. Shan Xu, Harald F. Hess et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">arXiv</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">90%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">65</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/d8c4b74da1a33f545474d841b352b87746a1edba" target="_blank" rel="noopener">Deep Learning Pipeline for Chromosome Segmentation</a>
+                <div class="authors">Kristyna Pijackova, T. Gotthans, J. Gotthans</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">U-Net, Mask R-CNN, R-CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">66</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/36232325/" target="_blank" rel="noopener">DLm6Am: A Deep-Learning-Based Tool for Identifying N6,2&#x27;-O-Dimethyladenosine Sites in RNA Sequences.</a>
+                <div class="authors">Zhengtao Luo, Wei Su, Liliang Lou, Wangren Qiu, Xuan Xiao et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">LSTM</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">67</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/34822119/" target="_blank" rel="noopener">Classification of analyzable metaphase images using transfer learning and fine tuning.</a>
+                <div class="authors">Abdulkadir Albayrak</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">VGG-16, VGG, Inception</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">68</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/35252012/" target="_blank" rel="noopener">Circulating Tumor Cell Identification Based on Deep Learning.</a>
+                <div class="authors">Zhifeng Guo, Xiaoxi Lin, Yan Hui, Jingchun Wang, Qiuli Zhang et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">69</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/35907293/" target="_blank" rel="noopener">ChromosomeNet: A massive dataset enabling benchmarking and building basedlines of clinical chromosome classification.</a>
+                <div class="authors">Chengchuang Lin, Hanbiao Chen, Jiesheng Huang, Jing Peng, Li Guo et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center">2763000 karyotype</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">99.33%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">70</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/98def82064941192fe82ef9c8aa77b7412e7a4dd" target="_blank" rel="noopener">Chromosome Segmentation Analysis Using Image Processing Techniques and Autoencoders</a>
+                <div class="authors">Amritha S. Pallavoor, A. Prajwal, TS Sundareshan, Sreekanth K Pallavoor</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Autoencoder</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">71</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/d1d20ed78faf8d9678b4503e6db91dea27d81677" target="_blank" rel="noopener">Chromenet: a CNN architecture with comparison of optimizers for classification of human chromosome images</a>
+                <div class="authors">D. Menaka, S. Vaidyanathan</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">72</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/32750868/" target="_blank" rel="noopener">CIR-Net: Automatic Classification of Human Chromosome Based on Inception-ResNet Architecture.</a>
+                <div class="authors">Chengchuang Lin, Gansen Zhao, Zhirong Yang, Aihua Yin, Xinming Wang et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">ResNet, Inception</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">73</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/b77ce6468b5b45815ee1f4662825ec588536e2b1" target="_blank" rel="noopener">Automated identification of aneuploid cells within the inner cell mass of an embryo using a numerical extraction of morphological signatures</a>
+                <div class="authors">Abbas Habibalahi, Jared M. Campbell, T. Tan, S. Mahbub, R. Rose et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">74</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/191a2075b45798e372ae537c26bea2e22c084bda" target="_blank" rel="noopener">Automated chromosomes counting systems using deep neural network</a>
+                <div class="authors">S. Kang, Junghun Han, Y. Chu, Inkyung Lee, Haemi Joo et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Faster R-CNN, R-CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">75</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/c2c8c4b2c7dabb66cf77ee81d4b0422d5b974342" target="_blank" rel="noopener">Automated analysis of karyotype images</a>
+                <div class="authors">Ensieh Khazaei, Ala Emrany, Mostafa Tavassolipour, F. Mahjoubi, A. Ebrahimi et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">76</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/875bd6e495c5ab30b7dde934f9d8e9d2c2cede20" target="_blank" rel="noopener">An improved deep convolutional neural network architecture for chromosome abnormality detection using hybrid optimization model</a>
+                <div class="authors">N. Nimitha, P. Ezhumalai, A. Chokkalingam</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">DCNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">77</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/34974232/" target="_blank" rel="noopener">A computer-aided grading of glioma tumor using deep residual networks fusion.</a>
+                <div class="authors">Prasun Chandra Tripathi, Soumen Bag</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">95.87%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">78</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/34133283/" target="_blank" rel="noopener">A Clinical Dataset and Various Baselines for Chromosome Instance Segmentation.</a>
+                <div class="authors">Runhua Huang, Chengchuang Lin, Aihua Yin, Hanbiao Chen, Li Guo et al.</div>
+            </td>
+            <td class="center">2022</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">R-CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">95.38%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">79</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/a6edb5197e2eced479311902218c42383af41ea6" target="_blank" rel="noopener">Traditional and deep‐based techniques for end‐to‐end automated karyotyping: A review</a>
+                <div class="authors">Remya Remani Sathyan, Gopakumar Chandrasekhara Menon, H. S, R. Thampi, Jude Hemanth Duraisamy</div>
+            </td>
+            <td class="center">2021</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">80</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/33714937/" target="_blank" rel="noopener">Retracted: Diagnostic Classification and Prognostic Prediction Using Common Genetic Variants in Autism Spectrum Disorder: Genotype-Based Deep Learning.</a>
+                <div class="authors">Haishuai Wang, Paul Avillach</div>
+            </td>
+            <td class="center">2021</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">88%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">81</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/33101452/" target="_blank" rel="noopener">New methodology for repetitive sequences identification in human X and Y chromosomes.</a>
+                <div class="authors">Rabeb Touati, Asma Tajouri, Imen Mesaoudi, Afef Elloumi Oueslati, Zied Lachiri et al.</div>
+            </td>
+            <td class="center">2021</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">82</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/1fb1697b755e4d00472e2cfbb36ff178ef248862" target="_blank" rel="noopener">Classification of fluorescent R-Band metaphase chromosomes using a convolutional neural network is precise and fast in generating karyograms of hematologic neoplastic cells.</a>
+                <div class="authors">B. Vajen, Siegfried Hänselmann, Friederike Lutterloh, S. Käfer, Jennifer Espenkötter et al.</div>
+            </td>
+            <td class="center">2021</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">83</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/33932523/" target="_blank" rel="noopener">ChrNet: A re-trainable chromosome-based 1D convolutional neural network for predicting immune cell types.</a>
+                <div class="authors">Shuo Jia, Pingzhao Hu</div>
+            </td>
+            <td class="center">2021</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-metric">90%</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">84</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/0a8ce148a4f8c7f7a9a39f4c73cdf9b93a0da0e6" target="_blank" rel="noopener">CNN and Computational Configuration Mathematical Chromosomal Defect Analysis in Medical Images</a>
+                <div class="authors">M. SureshAnand, G. Reddy, S. Rubavathy, Kalaiselvi Geetha</div>
+            </td>
+            <td class="center">2021</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">Mask R-CNN, R-CNN</span></td>
+            <td class="center">, chromosomes</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">85</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/c877f158cbaea368bfc2528be8d20f5a27ab0af9" target="_blank" rel="noopener">Benchmarking of Whole Genome Sequencing (WGS) and Whole Transcriptome Sequencing (WTS) As Diagnostic Tools for the Genetic Characterization of Acute Myeloid Leukemia (AML) and Acute Lymphoblastic Leukemia (ALL) in Adults</a>
+                <div class="authors">C. Haferlach, W. Walter, M. Meggendorfer, A. Stengel, C. Baer et al.</div>
+            </td>
+            <td class="center">2021</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center">9 samples</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">86</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/33634313/" target="_blank" rel="noopener">A sequence-based deep learning approach to predict CTCF-mediated chromatin loop.</a>
+                <div class="authors">Hao Lv, Fu-Ying Dao, Hasan Zulfiqar, Wei Su, Hui Ding et al.</div>
+            </td>
+            <td class="center">2021</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">87</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/206af06d630836a13e46f6f0bacb330097b7fa5e" target="_blank" rel="noopener">A full molecular picture of F8 intron 1 inversion created with optical genome mapping</a>
+                <div class="authors">S. Fahiminiya, G. Rivard, P. Scott, A. Montpetit, F. Bacot et al.</div>
+            </td>
+            <td class="center">2021</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">88</td>
+            <td class="title-cell"><a href="http://arxiv.org/abs/2005.13110v2" target="_blank" rel="noopener">Evolutionary NAS with Gene Expression Programming of Cellular Encoding</a>
+                <div class="authors">Clifford Broni-Bediako, Yuki Murata, Luiz Henrique Mormille, Masayasu Atsumi</div>
+            </td>
+            <td class="center">2020</td>
+            <td><span class="badge badge-db">arXiv</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">89</td>
+            <td class="title-cell"><a href="http://arxiv.org/abs/2006.12703v1" target="_blank" rel="noopener">Efficient Hyperparameter Optimization in Deep Learning Using a Variable Length Genetic Algorithm</a>
+                <div class="authors">Xueli Xiao, Ming Yan, Sunitha Basodi, Chunyan Ji, Yi Pan</div>
+            </td>
+            <td class="center">2020</td>
+            <td><span class="badge badge-db">arXiv</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">90</td>
+            <td class="title-cell"><a href="http://arxiv.org/abs/2012.15418v1" target="_blank" rel="noopener">EPIHC: Improving Enhancer-Promoter Interaction Prediction by using Hybrid features and Communicative learning</a>
+                <div class="authors">Shuai Liu, Xinran Xu, Zhihao Yang, Xiaohan Zhao, Wen Zhang</div>
+            </td>
+            <td class="center">2020</td>
+            <td><span class="badge badge-db">arXiv</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">91</td>
+            <td class="title-cell"><a href="http://arxiv.org/abs/2006.15528v2" target="_blank" rel="noopener">DeepACC:Automate Chromosome Classification based on Metaphase Images using Deep Learning Framework Fused with Prior Knowledge</a>
+                <div class="authors">Chunlong Luo, Tianqi Yu, Yufan Luo, Manqing Wang, Fuhai Yu et al.</div>
+            </td>
+            <td class="center">2020</td>
+            <td><span class="badge badge-db">arXiv</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center">3390 metaphase</td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">92</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/e1a7b518339a8bcfc9aa8e9989f31ca6f308af0c" target="_blank" rel="noopener">Chromosome Cluster Identification Framework Based on Geometric Features and Machine Learning Algorithms*</a>
+                <div class="authors">Chengchuang Lin, A. Yin, Qinglan Wu, Hanbiao Chen, Li Guo et al.</div>
+            </td>
+            <td class="center">2020</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">93</td>
+            <td class="title-cell"><a href="https://pubmed.ncbi.nlm.nih.gov/32259762/" target="_blank" rel="noopener">Brain MRI analysis using a deep learning based evolutionary approach.</a>
+                <div class="authors">Hossein Shahamat, Mohammad Saniee Abadeh</div>
+            </td>
+            <td class="center">2020</td>
+            <td><span class="badge badge-db">PubMed</span></td>
+            <td><span class="badge badge-model">CNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        <tr>
+            <td class="num">94</td>
+            <td class="title-cell"><a href="https://www.semanticscholar.org/paper/0421349b1b829cd23a349f246cb1d2177b8fd49e" target="_blank" rel="noopener">A Comprehensive Study on Convolutional Neural Networks for Chromosome Classification</a>
+                <div class="authors">R. Remya, S. Hariharan, Vishnu Vinod, David John W Fernandez, NM Muhammed Ajmal et al.</div>
+            </td>
+            <td class="center">2020</td>
+            <td><span class="badge badge-db">Semantic Scholar</span></td>
+            <td><span class="badge badge-model">DCNN</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+            <td class="center"><span class="badge badge-na">N/A</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<button class="scroll-top" id="scrollTop" title="Back to top">↑</button>
+
+<footer class="footer">
+  Generated by Research Assistant &middot; Data extracted from Semantic Scholar, arXiv &amp; PubMed APIs &middot; May 24, 2026 — 22:51
+</footer>
+
+<script>
+// ─── Charts ───
+const yearCtx = document.getElementById('chartYear').getContext('2d');
+new Chart(yearCtx, {
+  type: 'bar',
+  data: {
+    labels: ["2020", "2021", "2022", "2023", "2024", "2025", "2026"],
+    datasets: [{
+      label: 'Papers',
+      data: [7, 9, 22, 19, 14, 17, 6],
+      backgroundColor: 'rgba(99,102,241,.6)',
+      borderColor: '#6366f1',
+      borderWidth: 1,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,.05)' } },
+      y: { beginAtZero: true, ticks: { color: '#94a3b8', stepSize: 1 }, grid: { color: 'rgba(255,255,255,.05)' } }
+    }
+  }
+});
+
+const dbCtx = document.getElementById('chartDB').getContext('2d');
+new Chart(dbCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ["PubMed", "Semantic Scholar", "arXiv"],
+    datasets: [{
+      data: [39, 46, 9],
+      backgroundColor: ['#6366f1','#06b6d4','#f59e0b','#22c55e','#f43f5e'],
+      borderColor: '#1e2640',
+      borderWidth: 3,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 16 } } }
+  }
+});
+
+const modelCtx = document.getElementById('chartModels').getContext('2d');
+new Chart(modelCtx, {
+  type: 'bar',
+  data: {
+    labels: ["CNN", "R-CNN", "Mask R-CNN", "Transformer/ViT", "ResNet", "DCNN", "Inception", "LSTM", "Xception", "Autoencoder", "ResNet-50", "YOLO", "VGG-19", "VGG", "Vision Transformer"],
+    datasets: [{
+      label: 'Count',
+      data: [32, 11, 7, 7, 5, 5, 5, 4, 4, 4, 3, 3, 2, 2, 2],
+      backgroundColor: 'rgba(168,85,247,.5)',
+      borderColor: '#a855f7',
+      borderWidth: 1,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, ticks: { color: '#94a3b8', stepSize: 1 }, grid: { color: 'rgba(255,255,255,.05)' } },
+      y: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// ─── Search & Filter ───
+const searchInput = document.getElementById('searchInput');
+const filterBtns = document.querySelectorAll('.filter-btn');
+const tbody = document.getElementById('tableBody');
+let activeFilter = 'all';
+
+function applyFilters() {
+  const q = searchInput.value.toLowerCase();
+  const rows = tbody.querySelectorAll('tr');
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    const matchSearch = !q || text.includes(q);
+    const matchFilter = activeFilter === 'all' || text.includes(activeFilter.toLowerCase());
+    row.style.display = (matchSearch && matchFilter) ? '' : 'none';
+  });
+}
+searchInput.addEventListener('input', applyFilters);
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilters();
+  });
+});
+
+// ─── Scroll to top ───
+const scrollBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+  scrollBtn.classList.toggle('visible', window.scrollY > 400);
+});
+scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+</body>
+</html>
